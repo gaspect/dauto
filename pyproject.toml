@@ -1,0 +1,14 @@
+[project]
+name = "dauto"
+version = "0.0.1"
+
+authors = [
+    {name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com"},
+]
+
+description = "A tool django database configuration"
+
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
