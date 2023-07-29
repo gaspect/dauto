@@ -6,7 +6,7 @@ authors = [
     {name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com"},
 ]
 
-description = "A tool django database configuration"
+description = "A tool for django database configuration"
 
 
 [build-system]
