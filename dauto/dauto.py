@@ -13,7 +13,7 @@ SCHEMES = {
 }
 
 
-def database(url, engine=None, conn_max_age=0, conn_health_checks=False **options):
+def database(url, engine=None, conn_max_age=0, conn_health_checks=False, **options):
     """Parses a database URL."""
 
     if url == "sqlite://:memory:":
