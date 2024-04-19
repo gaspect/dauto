@@ -14,7 +14,32 @@ SCHEMES = {
 
 
 def database(url, engine=None, conn_max_age=0, conn_health_checks=False, **options):
-    """Parses a database URL."""
+    """
+    The `database` method is used to parse a database URL and return a configuration dictionary for connecting to the database.
+
+    Parameters:
+    - `url` (string): The URL of the database to connect to.
+    - `engine` (string, optional): The database engine to use. Defaults to `None`.
+    - `conn_max_age` (int, optional): The maximum age of database connections in seconds. Defaults to `0`.
+    - `conn_health_checks` (bool, optional): Indicates whether to perform health checks on database connections. Defaults to `False`.
+    - `**options` (dict, optional): Additional database connection options. These will be added to the configuration dictionary.
+
+    Returns:
+    - `config` (dict): The configuration dictionary for connecting to the database. The dictionary contains the following keys:
+        - `"ENGINE"`: The database engine to use.
+        - `"NAME"`: The name of the database.
+        - `"USER"`: The username for connecting to the database.
+        - `"PASSWORD"`: The password for connecting to the database.
+        - `"HOST"`: The hostname of the database server.
+        - `"PORT"`: The port number of the database server.
+        - `"CONN_MAX_AGE"`: The maximum age of database connections in seconds.
+        - `"CONN_HEALTH_CHECKS"`: Indicates whether to perform health checks on database connections.
+        - `"OPTIONS"`: Additional database connection options.
+
+    Example Usage:
+        url = "postgres://user:password@localhost:5432/mydatabase"
+        config = database(url, engine="django.db.backends.postgresql", conn_max_age=60)
+    """
 
     if url == "sqlite://:memory:":
         # this is a special case, because if we pass this URL into
