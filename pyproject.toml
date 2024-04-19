@@ -1,12 +1,12 @@
 [project]
 name = "dauto"
-version = "0.0.1"
+version = "0.1.0"
 
 authors = [
     {name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com"},
 ]
 
-description = "A tool for django database configuration"
+description = "A toolkit for django common usecases"
 
 
 [build-system]
