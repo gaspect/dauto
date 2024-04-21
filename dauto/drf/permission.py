@@ -61,7 +61,6 @@ def permissions_for(model: typing.Generic[M]):
 
     Returns:
         The dynamically created permission class.
-
     """
     return type(
         f"{model.__class__.__name__}ModelPermission",

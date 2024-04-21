@@ -6,32 +6,13 @@ from rest_framework.response import Response
 # noinspection PyUnresolvedReferences
 class CreateVerboseModelMixin(mixins.CreateModelMixin):
     """
-    Class: CreateVerboseModelMixin
-
-    The CreateVerboseModelMixin class is a mixin that extends the functionality of the CreateModelMixin class. It provides additional methods for handling the creation of objects with verbose output.
+    Description:
+        This class is a mixin that extends the functionality of the CreateModelMixin class. It provides additional methods for handling the creation of objects with verbose output.
 
     Methods:
-    - get_read_object(instance)
-        * Description: Returns the read object for the given instance.
-        * Parameters:
-            - instance: The instance for which to get the read object.
-        * Returns: The read object.
-
-    - get_read_serializer(*args, **kwargs)
-        * Description: Returns the serializer instance that should be used for validating and deserializing input, and for serializing output.
-        * Parameters:
-            - args: Additional arguments to pass to the serializer class.
-            - kwargs: Additional keyword arguments to pass to the serializer class.
-        * Returns: The serializer instance.
-
-    - create(request, *args, **kwargs)
-        * Description: Creates a new object using the provided request data.
-        * Parameters:
-            - request: The request object containing the data for creating the object.
-            - args: Additional arguments to pass to the create method.
-            - kwargs: Additional keyword arguments to pass to the create method.
-        * Returns: A response containing the created object data.
-
+    - get_read_object: Returns the read object.
+    - get_read_serializer: Returns the serializer instance.
+    - create: Returns a response containing the created object data.
     """
     # noinspection PyMethodMayBeStatic
     def get_read_object(self, instance):
@@ -63,14 +44,13 @@ class CreateVerboseModelMixin(mixins.CreateModelMixin):
 # noinspection PyUnresolvedReferences
 class UpdateVerboseModelMixin(mixins.UpdateModelMixin):
     """
-
-    The UpdateVerboseModelMixin class is a mixin that provides additional functionality for updating models with verbose output.
+    Description:
+        This class is a mixin that provides additional functionality for updating models with verbose output.
 
     Methods:
     - get_read_object: Returns the object being read.
     - get_read_serializer: Returns the serializer instance used for validating, deserializing input, and serializing output.
     - update: Updates the model instance with the provided data and returns the serialized read data.
-
     """
     # noinspection PyMethodMayBeStatic
     def get_read_object(self, instance):
