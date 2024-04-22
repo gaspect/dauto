@@ -1,6 +1,6 @@
 [project]
 name = "dauto"
-version = "0.1.0"
+version = "0.0.3"
 
 authors = [
     {name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com"},
