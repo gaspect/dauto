@@ -60,14 +60,12 @@ class OutSignal:
         self.signal.disconnect(
             receiver=self.receiver,
             sender=self.sender,
-            dispatch_uid=self.dispatch_uid,
-            weak=False
+            dispatch_uid=self.dispatch_uid
         )
 
     def __exit__(self, type, value, traceback):
         self.signal.connect(
             receiver=self.receiver,
             sender=self.sender,
-            dispatch_uid=self.dispatch_uid,
-            weak=False
+            dispatch_uid=self.dispatch_uid
         )
