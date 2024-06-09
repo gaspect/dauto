@@ -1,6 +1,41 @@
-from rest_framework import mixins
-from rest_framework import status
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
+
+
+class ByOperationSerializer:
+    """
+    Description:
+        This class is responsible for determining the appropriate serializer class based on the HTTP request method
+        and the action being performed. It extends the GenericViewSet class.
+
+    Returns:
+        The serializer class to be used for the current request and action.
+    """
+
+    # noinspection PyUnresolvedReferences
+    def get_serializer_class(self: viewsets.GenericViewSet):
+        old: dict = super().get_serializer_class()
+        if hasattr(self, "action") and self.action in old:
+            return old.get(self.action)
+        elif self.request.method in ["GET", "HEAD", "OPTIONS"]:
+            return old.get("read")
+        return old.get("write")
+
+
+class ByVersionSerializer:
+    """
+    Description:
+        This class is responsible for determining the appropriate serializer class based on the request version.
+
+    Returns:
+        The serializer class corresponding to the request version.
+
+    """
+
+    # noinspection PyUnresolvedReferences
+    def get_serializer_class(self):
+        old: dict = super().get_serializer_class()
+        return old.get(self.request.version)
 
 
 # noinspection PyUnresolvedReferences
@@ -14,6 +49,7 @@ class CreateVerboseModelMixin(mixins.CreateModelMixin):
     - get_read_serializer: Returns the serializer instance.
     - create: Returns a response containing the created object data.
     """
+
     # noinspection PyMethodMayBeStatic
     def get_read_object(self, instance):
         return instance
@@ -52,6 +88,7 @@ class UpdateVerboseModelMixin(mixins.UpdateModelMixin):
     - get_read_serializer: Returns the serializer instance used for validating, deserializing input, and serializing output.
     - update: Updates the model instance with the provided data and returns the serialized read data.
     """
+
     # noinspection PyMethodMayBeStatic
     def get_read_object(self, instance):
         return instance

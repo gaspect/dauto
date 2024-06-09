@@ -1,3 +1,15 @@
+# # Signals
+
+# Signals and circular calls sucks and when we use signals this happen frequently then we made a method
+# for execute code  without a signal. This work with a python contex manager used as a pun so:
+
+# ```python
+# with OutSignal(signal,sender, receiver):
+#     <code>
+# ```
+
+# Will execute the `code` section with the signal unplugged, avoiding circular imports and nested signal calls
+
 class OutSignal:
     """
     Description:
@@ -50,6 +62,7 @@ class OutSignal:
         print("Out of the 'with' block:")
         my_sender()
     """
+
     def __init__(self, signal, receiver, sender, dispatch_uid=None):
         self.signal = signal
         self.receiver = receiver

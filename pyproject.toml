@@ -7,7 +7,16 @@ authors = [
 ]
 
 description = "A toolkit for django common usecases"
+readme = "Readme.md"
+requires-python  = ">= 3.12.0"
 
+classifiers=[
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha",
+    "Framework :: Django"
+]
 
 [build-system]
 requires = ["setuptools"]

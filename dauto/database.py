@@ -1,10 +1,18 @@
+# # Database
+
 import urllib.parse as urlparse
 
-# Register database schemes in URLs.
+# When we deploy Django projects usually we get the database url as a configuration **string** so it's tricky
+# destructure that configuration string in a proper database configuration for django. This module try to
+# cover that for you.
+
+# We start registering database common schemes in URLs like objects.
+
 urlparse.uses_netloc.append("postgres")
 urlparse.uses_netloc.append("mysql")
 urlparse.uses_netloc.append("sqlite")
 
+# Then we do a mapping of most used (a very opinionated stuff, We know) django database backends
 
 SCHEMES = {
     "postgres": "django.db.backends.postgresql",
@@ -12,6 +20,9 @@ SCHEMES = {
     "sqlite": "django.db.backends.sqlite3",
 }
 
+
+# Then we build the magic method that with a very few parameters alongside the url configuration return
+# a valid django configuration for databases.
 
 def database(url, engine=None, conn_max_age=0, conn_health_checks=False, **options):
     """

@@ -1,0 +1,28 @@
+site_name: Dauto
+site_url: https://gaspect.github.io/dauto
+repo_url: https://github.com/gaspect/dauto
+
+theme:
+    name: material
+    feature:
+        tabs: true
+    palette:
+        primary: teal
+        accent: teak
+
+markdown_extensions:
+    - codehilite
+    - toc:
+        permalink: true
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
+
+nav:
+    - Home: index.md
+    - API:
+        dauto.volatile: dauto/volatile.md
+        dauto.database: dauto/database.md
+        dauto.admin: dauto/admin.md
+        dauto.signals: dauto/signals.md
+        dauto.drf: dauto/drf/__init__.md

@@ -1,0 +1,4 @@
+inline: true
+sources:
+  dauto : docs
+  Readme.md: docs/index.md
