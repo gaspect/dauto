@@ -2,6 +2,11 @@ import functools
 
 
 def singleton(cls):
+    """
+    Make a class a singleton
+    Parameters:
+        cls (type): the class to be decorated
+    """
     @functools.wraps(cls)
     def wrapper_singleton(*args, **kwargs):
         if wrapper_singleton.instance is None:
