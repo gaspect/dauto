@@ -26,7 +26,10 @@ class _BaseApiFunctionViewModelPermissions(permissions.BasePermission):
     authenticated_users_only = True
 
     def get_required_permissions(self, method):
-        """Given a models and an HTTP method, return the list of permission codes that the user is required to have."""
+        """
+        Given a models and an HTTP method, return the list of permission codes that the user is required to have.
+        """
+
         # noinspection PyProtectedMember
         kwargs = {
             "app_label": self.model._meta.app_label,

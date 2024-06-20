@@ -21,7 +21,6 @@ markdown_extensions:
 nav:
     - Home: index.md
     - API:
-        dauto.volatile: dauto/volatile.md
         dauto.database: dauto/database.md
         dauto.admin: dauto/admin.md
         dauto.signals: dauto/signals.md
