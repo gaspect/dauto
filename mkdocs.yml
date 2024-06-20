@@ -26,3 +26,7 @@ nav:
         dauto.admin: dauto/admin.md
         dauto.signals: dauto/signals.md
         dauto.drf: dauto/drf/__init__.md
+        dauto.drf.viewsets.mixin: dauto/drf/viewsets/mixin.md
+        dauto.drf.permission: dauto/drf/permission.md
+        dauto.drf.versioning: dauto/drf/versioning.md
+        dauto.utils: dauto/utils/__init__.md

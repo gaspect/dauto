@@ -1,5 +1,8 @@
+# # Versioning
 from rest_framework.versioning import NamespaceVersioning
 
+
+# A namespace versioning to use when we want split into version an API
 
 class CustomNamespaceVersioning(NamespaceVersioning):
     """

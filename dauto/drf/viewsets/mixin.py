@@ -1,6 +1,17 @@
+# # Mixins
+
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
+
+# Django use mixins as a sort of dependency injection or inversion of control. This file
+# contain a set of these dependencies implementations beforehand.
+
+
+# ## Serializer mixins
+
+# The serializer mixins can 'inject' new ways to get serializers from classes, can be combined between them.
+# They are self documented
 
 class ByOperationSerializerMixin:
     """
@@ -28,6 +39,12 @@ class ByVersionSerializerMixin:
         old: dict = super().get_serializer_class()
         return old.get(self.request.version)
 
+
+# ## Verbose mixins
+
+# Many times we want a more verbose output from a write method (create, update, partial update)
+# when we use DRF. The verbose mixins classes
+# can do it using a read serializer to map the target instance into the desired format.
 
 # noinspection PyUnresolvedReferences
 class CreateVerboseModelMixin(mixins.CreateModelMixin):
