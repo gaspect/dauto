@@ -15,9 +15,9 @@ _T = typing.TypeVar('_T')
 @dataclass(frozen=True)
 class Event(typing.Generic[_T]):
     topic: str
-    date: datetime.date
     payload: _T
     version: str | None = None
+    date: datetime.date = datetime.now()
 
 
 class _Observer:
@@ -45,7 +45,10 @@ class EventBuss:
         def decorator(callback: typing.Callable[[Event], typing.Awaitable[typing.Any]]):
             if not inspect.iscoroutinefunction(callback):
                 callback = awaitable(callback)
-            self.observers.append(_Observer(topic, callback))
+            self.observers.append(_Observer(
+                topic.replace('.', '\\.').replace('*', '.*'),
+                callback
+            ))
             return callback
 
         return decorator
@@ -59,20 +62,3 @@ class EventBuss:
 
     def dispatch(self, event: Event):
         return asyncio.run(self._dispatch(event))  # allow concurrent event handling
-
-
-eb = EventBuss()
-
-
-@eb.subscribe("test")  # to route events
-def test_callback(data: dict):
-    print(data)
-
-
-eb.dispatch(Event(
-    topic="test",
-    date=datetime.now(),
-    payload={
-        "test-data": {1, 2, 3}
-    }
-))
