@@ -2,14 +2,10 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
 
-class ByOperationSerializer:
+class ByOperationSerializerMixin:
     """
-    Description:
-        This class is responsible for determining the appropriate serializer class based on the HTTP request method
-        and the action being performed. It extends the GenericViewSet class.
-
-    Returns:
-        The serializer class to be used for the current request and action.
+    This class is responsible for determining the appropriate serializer class based on the HTTP request method
+    and the action being performed. It extends the GenericViewSet class.
     """
 
     # noinspection PyUnresolvedReferences
@@ -22,14 +18,9 @@ class ByOperationSerializer:
         return old.get("write")
 
 
-class ByVersionSerializer:
+class ByVersionSerializerMixin:
     """
-    Description:
-        This class is responsible for determining the appropriate serializer class based on the request version.
-
-    Returns:
-        The serializer class corresponding to the request version.
-
+    This class is responsible for determining the appropriate serializer class based on the request version.
     """
 
     # noinspection PyUnresolvedReferences
@@ -40,15 +31,8 @@ class ByVersionSerializer:
 
 # noinspection PyUnresolvedReferences
 class CreateVerboseModelMixin(mixins.CreateModelMixin):
-    """
-    Description:
-        This class is a mixin that extends the functionality of the CreateModelMixin class. It provides additional methods for handling the creation of objects with verbose output.
-
-    Methods:
-    - get_read_object: Returns the read object.
-    - get_read_serializer: Returns the serializer instance.
-    - create: Returns a response containing the created object data.
-    """
+    """This class is a mixin that extends the functionality of the CreateModelMixin class. It provides additional
+    methods for handling the creation of objects with verbose output."""
 
     # noinspection PyMethodMayBeStatic
     def get_read_object(self, instance):
@@ -80,13 +64,7 @@ class CreateVerboseModelMixin(mixins.CreateModelMixin):
 # noinspection PyUnresolvedReferences
 class UpdateVerboseModelMixin(mixins.UpdateModelMixin):
     """
-    Description:
-        This class is a mixin that provides additional functionality for updating models with verbose output.
-
-    Methods:
-    - get_read_object: Returns the object being read.
-    - get_read_serializer: Returns the serializer instance used for validating, deserializing input, and serializing output.
-    - update: Updates the model instance with the provided data and returns the serialized read data.
+    This class is a mixin that provides additional functionality for updating models with verbose output.
     """
 
     # noinspection PyMethodMayBeStatic

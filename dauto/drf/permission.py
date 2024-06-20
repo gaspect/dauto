@@ -21,10 +21,7 @@ class _BaseApiFunctionViewModelPermissions(permissions.BasePermission):
     authenticated_users_only = True
 
     def get_required_permissions(self, method):
-        """
-        Given a models and an HTTP method, return the list of permission
-        codes that the user is required to have.
-        """
+        """Given a models and an HTTP method, return the list of permission codes that the user is required to have."""
         # noinspection PyProtectedMember Todo
         kwargs = {
             "app_label": self.model._meta.app_label,
@@ -43,7 +40,7 @@ class _BaseApiFunctionViewModelPermissions(permissions.BasePermission):
             return True
 
         if not request.user or (
-            not request.user.is_authenticated and self.authenticated_users_only
+                not request.user.is_authenticated and self.authenticated_users_only
         ):
             return False
 
@@ -52,15 +49,15 @@ class _BaseApiFunctionViewModelPermissions(permissions.BasePermission):
         return request.user.has_perms(perms)
 
 
-def permissions_for(model: typing.Generic[M]):
+def permissions_for(model: typing.Generic[M]) -> type:
     """
     Create a dynamic permission class for the given model.
 
-    Args:
+    Parameters:
         model: The model object for which the permissions class is being generated.
 
     Returns:
-        The dynamically created permission class.
+        type: The dynamically created permission class.
     """
     return type(
         f"{model.__class__.__name__}ModelPermission",
