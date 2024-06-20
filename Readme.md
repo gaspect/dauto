@@ -8,7 +8,8 @@ This project is a collection of common solutions for django projects. It aims to
 django by providing tried-and-tested solutions to recurring issues and challenges. The strategies covered in this
 project span from basic to advanced topics, making it a versatile resource for both beginners and experienced django
 developers. It facilitates quick problem-solving in Django projects and significantly reduces development time and
-effort. With these solutions at hand, developers can focus more on other crucial aspects of their projects.
+effort. With these solutions at hand, developers can focus more on other crucial aspects of their projects. To learn more
+read the [documentation](https://gaspect.github.io/dauto/).
 
 ## Use Cases
 
@@ -291,6 +292,5 @@ class AViewSet(
 ```
 Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.
-
 
 > I think this cover all the project, happy coding ️ ☺️👋
