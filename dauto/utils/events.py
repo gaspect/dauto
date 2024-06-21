@@ -43,7 +43,7 @@ class _Observer:
         return self._function(*args, **kwargs)
 
 
-# Then the buss definition almost self-explanatory
+# Then the bus definition almost self-explanatory
 class EventBus:
     observers: typing.List[_Observer]
 
