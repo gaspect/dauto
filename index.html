@@ -377,6 +377,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#event-buss-and-event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Buss and event handling
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -819,6 +828,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#event-buss-and-event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Buss and event handling
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1047,7 +1065,7 @@ keeping the logic without change.</p>
 <h3 id="verbose-creation-and-update-methods">Verbose creation and update methods<a class="headerlink" href="#verbose-creation-and-update-methods" title="Permanent link">&para;</a></h3>
 <p>When we say verbose we refer to use a read serializer like to process the instance created. This make
 good combination with serializer getters</p>
-<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.drf.viewsets.mixin</span> <span class="kn">import</span> <span class="n">ByVersionSerializerMixin</span><span class="p">,</span> <span class="n">ByOperationSerializerMixin</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.drf.viewsets.mixin</span> <span class="kn">import</span> <span class="n">ByVersionSerializerMixin</span><span class="p">,</span> <span class="n">ByOperationSerializerMixin</span>
 <span class="kn">from</span> <span class="nn">dauto.drf.viewsets.mixin</span> <span class="kn">import</span> <span class="n">CreateVerboseModelMixin</span><span class="p">,</span> <span class="n">UpdateVerboseModelMixin</span>
 
 <span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span>  <span class="n">GenericViewSet</span>
@@ -1076,8 +1094,70 @@ good combination with serializer getters</p>
         <span class="p">},</span>
     <span class="p">}</span>
 </code></pre></div>
-Even if you use your own serializer system to get a writer and read serializer it will work, and
+<p>Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.</p>
+<h3 id="event-buss-and-event-handling">Event Buss and event handling<a class="headerlink" href="#event-buss-and-event-handling" title="Permanent link">&para;</a></h3>
+<p>We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
+RabitMQ or Kafka. We start creating the bus</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.utils.events</span> <span class="kn">import</span> <span class="n">EventBus</span>
+
+<span class="n">eb</span> <span class="o">=</span> <span class="n">EventBus</span><span class="p">()</span>
+</code></pre></div>
+Then defina a handler for certain topic. A topic is blob pattern representing, what we are gone to
+listen, these pattern are formed by namespaces splits by dots (<code>.</code>) and  asterisks (<code>*</code>) as
+namespace wildcard. So the namespace <code>test.*</code> can hear from <code>test.creation</code>, <code>test.deletion</code>, etc ...
+let's see some examples.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.utils.events</span> <span class="kn">import</span> <span class="n">EventBus</span><span class="p">,</span> <span class="n">Event</span>
+
+<span class="n">eb</span> <span class="o">=</span> <span class="n">EventBus</span><span class="p">()</span>
+
+<span class="nd">@eb</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s2">&quot;test.*&quot;</span><span class="p">)</span> <span class="c1"># we suscribe to all test derived but not for only test</span>
+<span class="k">def</span> <span class="nf">test_derived_handler</span><span class="p">(</span><span class="n">e</span><span class="p">:</span><span class="n">Event</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="nd">@eb</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s2">&quot;test.*.data&quot;</span><span class="p">)</span> <span class="c1"># only subscribes for test derived that derive in data</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">test_derived_data_handler</span><span class="p">(</span><span class="n">e</span><span class="p">:</span><span class="n">Event</span><span class="p">):</span> <span class="c1"># 🤓 check this, is async but work</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+<p>now we can dispatch an event using the bus</p>
+<div class="highlight"><pre><span></span><code><span class="n">eb</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span>
+    <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;test.test&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;Hola mundo test.test&quot;</span>
+<span class="p">))</span>
+<span class="n">eb</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span>
+    <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;test.whatever.data&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;Hola mundo test.whatever.data&quot;</span>
+<span class="p">))</span>
+<span class="n">eb</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span>
+    <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;test.anotherone.data&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;Hola mundo test.anotherone.data&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+<p>The first dispatch  with topic <code>test.test</code> will be handled by <code>test_derived_handler</code> the other two
+with topics <code>test.whatever.data</code> and <code>test.anotherone.data</code> will be handled by <code>test_derived_data_handler</code>.
+Beside the topic a version can be used to additional matching</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.utils.events</span> <span class="kn">import</span> <span class="n">EventBus</span><span class="p">,</span> <span class="n">Event</span>
+
+<span class="n">eb</span> <span class="o">=</span> <span class="n">EventBus</span><span class="p">()</span>
+
+<span class="nd">@eb</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s2">&quot;test.*&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.0.1&quot;</span><span class="p">)</span> <span class="c1"># only will match if topic and version match</span>
+<span class="k">def</span> <span class="nf">test_derived_handler_with_version</span><span class="p">(</span><span class="n">e</span><span class="p">:</span><span class="n">Event</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="c1"># this will not match</span>
+<span class="n">eb</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span>
+    <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;test.mismatch_version&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;Test payload&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.0.2&quot;</span>
+<span class="p">))</span> 
+
+<span class="c1"># this will  match</span>
+<span class="n">eb</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span>
+    <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;test.right_version&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;Test payload&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.0.1&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
 <blockquote>
 <p>I think this cover all the project, happy coding ️ ☺️👋</p>
 </blockquote>
