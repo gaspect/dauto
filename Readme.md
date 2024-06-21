@@ -290,7 +290,83 @@ class AViewSet(
         },
     }
 ```
+
 Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.
+
+### Event Buss and event handling
+
+We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
+RabitMQ or Kafka. We start creating the bus
+
+```python
+from dauto.utils.events import EventBus
+
+eb = EventBus()
+```
+Then defina a handler for certain topic. A topic is blob pattern representing, what we are gone to
+listen, these pattern are formed by namespaces splits by dots (`.`) and  asterisks (`*`) as
+namespace wildcard. So the namespace `test.*` can hear from `test.creation`, `test.deletion`, etc ...
+let's see some examples.
+
+```python
+
+from dauto.utils.events import EventBus, Event
+
+eb = EventBus()
+
+@eb.subscribe("test.*") # we suscribe to all test derived but not for only test
+def test_derived_handler(e:Event):
+    print(e)
+
+@eb.subscribe("test.*.data") # only subscribes for test derived that derive in data
+async def test_derived_data_handler(e:Event): # 🤓 check this, is async but work
+    print(e)
+```
+
+now we can dispatch an event using the bus
+
+```python
+eb.dispatch(Event(
+    topic="test.test",
+    payload="Hola mundo test.test"
+))
+eb.dispatch(Event(
+    topic="test.whatever.data",
+    payload="Hola mundo test.whatever.data"
+))
+eb.dispatch(Event(
+    topic="test.anotherone.data",
+    payload="Hola mundo test.anotherone.data"
+))
+```
+
+The first dispatch  with topic `test.test` will be handled by `test_derived_handler` the other two
+with topics `test.whatever.data` and `test.anotherone.data` will be handled by `test_derived_data_handler`.
+Beside the topic a version can be used to additional matching
+
+```python
+from dauto.utils.events import EventBus, Event
+
+eb = EventBus()
+
+@eb.subscribe("test.*", version="0.0.1") # only will match if topic and version match
+def test_derived_handler_with_version(e:Event):
+    print(e)
+
+# this will not match
+eb.dispatch(Event(
+    topic="test.mismatch_version",
+    payload="Test payload",
+    version="0.0.2"
+)) 
+
+# this will  match
+eb.dispatch(Event(
+    topic="test.right_version",
+    payload="Test payload",
+    version="0.0.1"
+))
+```
 
 > I think this cover all the project, happy coding ️ ☺️👋

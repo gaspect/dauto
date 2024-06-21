@@ -44,7 +44,7 @@ class _Observer:
 
 
 # Then the buss definition almost self-explanatory
-class EventBuss:
+class EventBus:
     observers: typing.List[_Observer]
 
     def __init__(self):
@@ -75,7 +75,8 @@ class EventBuss:
     async def _dispatch(self, event: Event):
         coroutines = []
         for callbacks in self.observers:
-            if callbacks.topic.fullmatch(event.topic):
+            if (callbacks.topic.fullmatch(event.topic) and
+                    (callbacks.version is None or callbacks.version == event.version)):
                 coroutines.append(callbacks(event))
         return await asyncio.gather(*coroutines)
 

@@ -1,9 +1,9 @@
 import unittest
-from dauto.utils import Event, EventBuss
+from dauto.utils import Event, EventBus
 
 
 class Events(unittest.TestCase):
-    eb = EventBuss()
+    eb = EventBus()
 
     def test_events_topic_matching(self):
         @self.eb.subscribe(r'test.*')
