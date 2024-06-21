@@ -378,9 +378,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#event-buss-and-event-handling" class="md-nav__link">
+  <a href="#event-handling" class="md-nav__link">
     <span class="md-ellipsis">
-      Event Buss and event handling
+      Event handling
     </span>
   </a>
   
@@ -829,9 +829,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#event-buss-and-event-handling" class="md-nav__link">
+  <a href="#event-handling" class="md-nav__link">
     <span class="md-ellipsis">
-      Event Buss and event handling
+      Event handling
     </span>
   </a>
   
@@ -1096,7 +1096,7 @@ good combination with serializer getters</p>
 </code></pre></div>
 <p>Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.</p>
-<h3 id="event-buss-and-event-handling">Event Buss and event handling<a class="headerlink" href="#event-buss-and-event-handling" title="Permanent link">&para;</a></h3>
+<h3 id="event-handling">Event handling<a class="headerlink" href="#event-handling" title="Permanent link">&para;</a></h3>
 <p>We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
 RabitMQ or Kafka. We start creating the bus</p>
 <p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dauto.utils.events</span> <span class="kn">import</span> <span class="n">EventBus</span>
