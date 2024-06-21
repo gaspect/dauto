@@ -1,12 +1,12 @@
 # Dauto
 
-Solutions for commons issues on django and drf projects
+Solutions for commons issues on Django and drf projects
 
 ## Description
 
-This project is a collection of common solutions for django projects. It aims to assist developers who are working with
-django by providing tried-and-tested solutions to recurring issues and challenges. The strategies covered in this
-project span from basic to advanced topics, making it a versatile resource for both beginners and experienced django
+This project is a collection of common solutions for Django projects. It aims to assist developers who are working with
+Django by providing tried-and-tested solutions to recurring issues and challenges. The strategies covered in this
+project span from basic to advanced topics, making it a versatile resource for both beginners and experienced Django
 developers. It facilitates quick problem-solving in Django projects and significantly reduces development time and
 effort. With these solutions at hand, developers can focus more on other crucial aspects of their projects. To learn more
 read the [documentation](https://gaspect.github.io/dauto/).
@@ -343,7 +343,7 @@ eb.dispatch(Event(
 
 The first dispatch  with topic `test.test` will be handled by `test_derived_handler` the other two
 with topics `test.whatever.data` and `test.anotherone.data` will be handled by `test_derived_data_handler`.
-Beside the topic a version can be used to additional matching
+Beside the topic version can be used to additional matching
 
 ```python
 from dauto.utils.events import EventBus, Event
