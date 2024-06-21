@@ -294,7 +294,7 @@ class AViewSet(
 Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.
 
-### Event Buss and event handling
+### Event handling
 
 We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
 RabitMQ or Kafka. We start creating the bus
