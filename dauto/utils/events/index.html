@@ -581,11 +581,13 @@
 <h1 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
 <span class="kn">from</span> <span class="nn">.awaitable</span> <span class="kn">import</span> <span class="n">awaitable</span>
 </code></pre></div>
 <p>We have been found a lot of events definitions over internet. This is one of them.</p>
@@ -627,6 +629,17 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div>
+<p>In thread safe environments like Django, run coroutines can be tricky, this is a 'just go' solution for it
+with te proper use of event loops</p>
+<div class="highlight"><pre><span></span><code>        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_event_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">,),</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_start_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">):</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 </code></pre></div>
@@ -667,7 +680,11 @@ callable: A decorator to subscribe to an event topic and version.</p>
 <p>Parameters:
 event (Event): The event to dispatch.</p>
 </details>
-<div class="highlight"><pre><span></span><code>        <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>  <span class="c1"># allow concurrent event handling</span>
+<div class="highlight"><pre><span></span><code>        <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>  <span class="c1"># allow concurrent event handling</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 </code></pre></div>
 
 
