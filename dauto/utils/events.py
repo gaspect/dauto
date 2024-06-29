@@ -2,11 +2,13 @@
 
 import typing
 import functools
-import asyncio
 import inspect
 import re
+import threading
+import asyncio
 from dataclasses import dataclass
 from datetime import datetime
+
 from .awaitable import awaitable
 
 # We have been found a lot of events definitions over internet. This is one of them.
@@ -49,6 +51,16 @@ class EventBus:
 
     def __init__(self):
         self.observers = []
+        # In thread safe environments like Django, run coroutines can be tricky, this is a 'just go' solution for it
+        # with te proper use of event loops
+        self._loop = asyncio.new_event_loop()
+        self._loop_thread = threading.Thread(target=self._start_event_loop, args=(self._loop,), daemon=True)
+        self._loop_thread.start()
+
+    @staticmethod
+    def _start_event_loop(loop: asyncio.AbstractEventLoop):
+        asyncio.set_event_loop(loop)
+        loop.run_forever()
 
     def subscribe(self, topic: str, version: str | None = None):
         """
@@ -60,6 +72,7 @@ class EventBus:
         Returns:
               callable: A decorator to subscribe to an event topic and version.
         """
+
         def decorator(callback: typing.Callable[[Event], typing.Awaitable[typing.Any]]):
             if not inspect.iscoroutinefunction(callback):
                 callback = awaitable(callback)
@@ -87,4 +100,9 @@ class EventBus:
         Parameters:
             event (Event): The event to dispatch.
         """
-        return asyncio.run(self._dispatch(event))  # allow concurrent event handling
+        return asyncio.run_coroutine_threadsafe(self._dispatch(event), self._loop)  # allow concurrent event handling
+
+    def __del__(self):
+        self._loop.call_soon_threadsafe(self._loop.stop)
+        self._loop_thread.join()
+
