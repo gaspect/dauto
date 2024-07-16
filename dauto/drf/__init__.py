@@ -4,6 +4,10 @@
 # framework (all least one of then ) for make APIS using Django is the Django Rest Framework. Thi section
 # cover a sets of class extensions to this framework to solve common issues.
 
+# ??? warning
+#
+# We need to check if djangorestframework package is installed
+
 
 try:
     import rest_framework

@@ -28,6 +28,7 @@ nav:
         dauto.drf.viewsets.mixin: dauto/drf/viewsets/mixin.md
         dauto.drf.permission: dauto/drf/permission.md
         dauto.drf.versioning: dauto/drf/versioning.md
+        dauto.polymorphic:  dauto/polymorphic.md
         dauto.utils: dauto/utils/__init__.md
         dauto.utils.singleton: dauto/utils/singleton.md
         dauto.utils.awaitable: dauto/utils/awaitable.md
