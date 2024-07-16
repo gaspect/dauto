@@ -16,8 +16,9 @@ urlparse.uses_netloc.append("sqlite")
 
 SCHEMES = {
     "postgres": "django.db.backends.postgresql",
-    "mysql": "mysql.connector.django",
+    "mysql": "django.db.backends.mysql",
     "sqlite": "django.db.backends.sqlite3",
+    "oracle": "django.db.backends.oracle"
 }
 
 

@@ -1,6 +1,6 @@
 [project]
 name = "dauto"
-version = "0.1.0"
+version = "0.1.1"
 
 authors = [
     { name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com" },
@@ -18,6 +18,22 @@ classifiers=[
     "Operating System :: OS Independent",
     "Development Status :: 2 - Pre-Alpha",
     "Framework :: Django"
+]
+dependencies = [
+    "django"
+]
+
+[project.optional-dependencies]
+rest=["djangorestframework"]
+polymorphic=["django-rest-polymorphic"]
+docs=[
+    "pylliterate",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-material-extensions"
+]
+all=[
+    "packageName[rest,polymorphic,docs]"
 ]
 
 [build-system]
