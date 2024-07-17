@@ -25,7 +25,9 @@ dependencies = [
 
 [project.optional-dependencies]
 rest=["djangorestframework"]
-polymorphic=["django-rest-polymorphic"]
+polymorphic-rest=["django-rest-polymorphic"]
+polymorphic-model=["django-polymorphic"]
+polymorphic=["packageName[polymorphic-rest,polymorphic-model]"]
 docs=[
     "pylliterate",
     "mkdocs",

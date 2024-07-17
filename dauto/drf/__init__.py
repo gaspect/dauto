@@ -12,4 +12,4 @@
 try:
     import rest_framework
 except ImportError as e:
-    raise ImportError("You must install 'djangorestframework' or dauto[rest] packages to use this package.")
+    raise ImportError("You must install dauto[rest] packages to use this package.")
