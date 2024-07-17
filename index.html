@@ -378,6 +378,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#polymorphic-useful-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Polymorphic useful methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#event-handling" class="md-nav__link">
     <span class="md-ellipsis">
       Event handling
@@ -572,6 +581,27 @@
   
   <span class="md-ellipsis">
     dauto.drf.versioning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dauto/polymorphic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dauto.polymorphic
   </span>
   
 
@@ -823,6 +853,15 @@
   <a href="#verbose-creation-and-update-methods" class="md-nav__link">
     <span class="md-ellipsis">
       Verbose creation and update methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polymorphic-useful-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Polymorphic useful methods
     </span>
   </a>
   
@@ -1096,6 +1135,36 @@ good combination with serializer getters</p>
 </code></pre></div>
 <p>Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.</p>
+<h3 id="polymorphic-useful-methods">Polymorphic useful methods<a class="headerlink" href="#polymorphic-useful-methods" title="Permanent link">&para;</a></h3>
+<p>If you've never read about django polymorphic start <a href="https://django-polymorphic.readthedocs.io/en/stable/">here</a>. Is a 
+more (debated) way to handle model inheritance. That method have its own caveats and drawbacks that
+we try to fix. One of then is incompatibility with some django  core admin functions making
+the django administration site useless, can be fixed using the <code>dauto.polymorphic.collector</code> function.</p>
+<p>In this example the user model is, and it's related with polymorphic models,
+so we need to monkey patch some django inners methods to solve incompatibility (do not ask
+how many hours or debug took give with the answer).</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.contrib.auth.admin</span> <span class="kn">import</span> <span class="n">UserAdmin</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.admin</span> <span class="kn">import</span> <span class="n">utils</span> <span class="c1">#👈</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">deletion</span> <span class="c1">#👈</span>
+
+
+<span class="kn">from</span> <span class="nn">dauto.polymorphic</span> <span class="kn">import</span> <span class="n">collector</span>
+
+<span class="k">class</span> <span class="nc">CustomUserModelAdmin</span><span class="p">(</span><span class="n">UserAdmin</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_deleted_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">collector</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">NestedObjects</span><span class="p">):</span> <span class="c1">#👈</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_deleted_objects</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span> <span class="c1"># now this method use the monkey patched object</span>
+        <span class="c1"># and here the object back to normality</span>
+
+    <span class="k">def</span> <span class="nf">delete_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">collector</span><span class="p">(</span><span class="n">deletion</span><span class="o">.</span><span class="n">Collector</span><span class="p">):</span> <span class="c1">#👈</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete_queryset</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span> <span class="c1"># now this method use the monkey patched object</span>
+        <span class="c1"># and here the object back to normality</span>
+</code></pre></div>
+We also build a method to build polymorphic serializers using already existing serializers.
+Can be found as the <code>dauto.polymorphic.polymorphic</code> function.</p>
 <h3 id="event-handling">Event handling<a class="headerlink" href="#event-handling" title="Permanent link">&para;</a></h3>
 <p>We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
 RabitMQ or Kafka. We start creating the bus</p>

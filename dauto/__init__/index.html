@@ -418,6 +418,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../polymorphic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dauto.polymorphic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../utils/__init__/" class="md-nav__link">
         
   
@@ -559,7 +580,11 @@
 
   <h1>  init  </h1>
 
-
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">django</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;You must install &#39;django&#39; or dauto[django] packages to use this package.&quot;</span><span class="p">)</span>
+</code></pre></div>
 
 
 

@@ -439,6 +439,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../polymorphic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dauto.polymorphic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../utils/__init__/" class="md-nav__link">
         
   
@@ -584,6 +605,15 @@
 <p>Now more than ever APIS are fashionable with microservices, lambdas, serverless functions etc, and the
 framework (all least one of then ) for make APIS using Django is the Django Rest Framework. Thi section
 cover a sets of class extensions to this framework to solve common issues.</p>
+<details class="warning">
+<summary>Warning</summary>
+</details>
+<p>We need to check if djangorestframework package is installed</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">rest_framework</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;You must install dauto[rest] packages to use this package.&quot;</span><span class="p">)</span>
+</code></pre></div>
 
 
 

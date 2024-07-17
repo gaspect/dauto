@@ -439,6 +439,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../polymorphic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dauto.polymorphic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../utils/__init__/" class="md-nav__link">
         
   
@@ -594,8 +615,9 @@ cover that for you.</p>
 <p>Then we do a mapping of most used (a very opinionated stuff, We know) django database backends</p>
 <div class="highlight"><pre><span></span><code><span class="n">SCHEMES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;postgres&quot;</span><span class="p">:</span> <span class="s2">&quot;django.db.backends.postgresql&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mysql&quot;</span><span class="p">:</span> <span class="s2">&quot;mysql.connector.django&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mysql&quot;</span><span class="p">:</span> <span class="s2">&quot;django.db.backends.mysql&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span> <span class="s2">&quot;django.db.backends.sqlite3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oracle&quot;</span><span class="p">:</span> <span class="s2">&quot;django.db.backends.oracle&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Then we build the magic method that with a very few parameters alongside the url configuration return
