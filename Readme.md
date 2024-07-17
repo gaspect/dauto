@@ -294,6 +294,44 @@ class AViewSet(
 Even if you use your own serializer system to get a writer and read serializer it will work, and
 use the serializer defined to be obtained in a read method as the verbose one.
 
+### Polymorphic useful methods
+
+If you've never read about django polymorphic start [here](https://django-polymorphic.readthedocs.io/en/stable/). Is a 
+more (debated) way to handle model inheritance. That method have its own caveats and drawbacks that
+we try to fix. One of then is incompatibility with some django  core admin functions making
+the django administration site useless, can be fixed using the `dauto.polymorphic.collector` function.
+
+In this example the user model is, and it's related with polymorphic models,
+so we need to monkey patch some django inners methods to solve incompatibility (do not ask
+how many hours or debug took give with the answer).
+
+
+```python
+
+from django.contrib.auth.admin import UserAdmin
+
+from django.contrib.admin import utils #👈
+from django.db.models import deletion #👈
+
+
+from dauto.polymorphic import collector
+
+class CustomUserModelAdmin(UserAdmin):
+
+    def get_deleted_objects(self, objs, request):
+        with collector(utils.NestedObjects): #👈
+            return super().get_deleted_objects(objs, request) # now this method use the monkey patched object
+        # and here the object back to normality
+
+    def delete_queryset(self, request, queryset):
+        with collector(deletion.Collector): #👈
+            return super().delete_queryset(request, queryset) # now this method use the monkey patched object
+        # and here the object back to normality
+
+```
+We also build a method to build polymorphic serializers using already existing serializers.
+Can be found as the `dauto.polymorphic.polymorphic` function.
+
 ### Event handling
 
 We achieve this using an observer pattern and some copy/paste from already knows pub-subs systems like
