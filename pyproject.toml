@@ -27,7 +27,6 @@ dependencies = [
 rest=["djangorestframework"]
 polymorphic-rest=["django-rest-polymorphic"]
 polymorphic-model=["django-polymorphic"]
-polymorphic=["packageName[polymorphic-rest,polymorphic-model]"]
 docs=[
     "pylliterate",
     "mkdocs",
@@ -35,9 +34,18 @@ docs=[
     "mkdocs-material-extensions"
 ]
 all=[
-    "packageName[rest,polymorphic,docs]"
+    "djangorestframework",
+    "django-rest-polymorphic",
+    "django-polymorphic",
+    "pylliterate",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-material-extensions"
 ]
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include=["dauto"]
