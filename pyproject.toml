@@ -1,6 +1,6 @@
 [project]
 name = "dauto"
-version = "0.1.1"
+version = "1.0.0"
 
 authors = [
     { name = "Jesús Enrique Fuentes González", email = "jesusefg12@gmail.com" },
@@ -47,5 +47,5 @@ all=[
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-include=["dauto"]
+[tool.setuptools.packages]
+find = {}
