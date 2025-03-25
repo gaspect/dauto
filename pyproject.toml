@@ -22,13 +22,16 @@ classifiers=[
     "Framework :: Django"
 ]
 dependencies = [
-    "django"
+    "django",
 ]
 
 [project.optional-dependencies]
 rest=["djangorestframework"]
 polymorphic-rest=["django-rest-polymorphic"]
 polymorphic-model=["django-polymorphic"]
+dev=[
+    "nox>=2025.2.9"
+]
 docs=[
     "pylliterate",
     "mkdocs",
@@ -42,7 +45,8 @@ all=[
     "pylliterate",
     "mkdocs",
     "mkdocs-material",
-    "mkdocs-material-extensions"
+    "mkdocs-material-extensions",
+    "nox>=2025.2.9"
 ]
 
 [build-system]
