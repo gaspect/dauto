@@ -1,6 +1,8 @@
 import typing
 from rest_framework import serializers
 
+# Some times we want to sort the fields of a serializer alphabetically to make it easier to read
+
 class AlphaSortedFieldsSerializer(serializers.Serializer):
     """
     Serializer that sorts fields alphabetically. Order first 'url' and 'id' fields typically resources identifiers
