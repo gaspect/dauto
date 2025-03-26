@@ -1,7 +1,31 @@
+from django.core.exceptions import ImproperlyConfigured
+from rest_framework.throttling import SimpleRateThrottle
+
+
 class ByOperationThrottle(SimpleRateThrottle):
     """
-    Throttle mechanism for mapping view operations into a custom rate throttle.
-    Must specify a throttle_scope attr in view or viewset for mapping action into rate.
+    Throttle mechanism based on DRF SimpleRateThrottle. Check the documentation for further details.
+
+    https://www.django-rest-framework.org/api-guide/throttling/#custom-throttles
+
+    Throttle for mapping view operations to a custom rate throttle. The view or viewset must define a `throttle_scope` attribute to map actions to specific rate limits.
+    Just add this field to the view:
+
+    throttle_scopes = {
+        'list': '10/m'
+        'retrieve': '10/m'
+
+        # Other actions
+        ...
+    }
+
+    Can be combined with other Throttle classes like UserRateThrottle or AnonRateThrottle.
+
+    class ByOperationUserRateThrottle(ByOperationThrottle, UserRateThrottle):
+        pass
+
+    class ByOperationAnonRateThrottle(ByOperationThrottle, AnonRateThrottle):
+        pass
     """
 
     scope = "by-operation"  # default scope
