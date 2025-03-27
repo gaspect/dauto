@@ -3,7 +3,7 @@
 import typing
 from django.db.models import deletion, Model
 from contextlib import contextmanager
-from .utils.using import using
+from ._utils.using import using
 
 
 def polymorphic(model: Model, *_serializers: str, resourcetype_name="resourcetype"):
