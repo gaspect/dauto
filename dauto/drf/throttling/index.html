@@ -8,13 +8,9 @@
       
       
       
-        <link rel="canonical" href="https://gaspect.github.io/dauto/dauto/drf/serializers/">
+        <link rel="canonical" href="https://gaspect.github.io/dauto/dauto/drf/throttling/">
       
       
-        <link rel="prev" href="../versioning/">
-      
-      
-        <link rel="next" href="../../polymorphic/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +18,7 @@
     
     
       
-        <title>dauto.drf.serializers - Dauto</title>
+        <title>Throttling - Dauto</title>
       
     
     
@@ -71,6 +67,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#other-actions" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              dauto.drf.serializers
+              Throttling
             
           </span>
         </div>
@@ -238,19 +239,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -265,7 +264,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             API
@@ -430,17 +429,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../serializers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -450,7 +442,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -502,6 +493,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -520,60 +513,82 @@
   
 
 
-  <h1>dauto.drf.serializers</h1>
+<p><a name="ref:ByOperationThrottle"></a></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.core.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImproperlyConfigured</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.throttling</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleRateThrottle</span>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">serializers</span>
-</code></pre></div>
-<p>Some times we want to sort the fields of a serializer alphabetically to make it easier to read</p>
-<p><a name="ref:AlphaSortedFieldsSerializer"></a></p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AlphaSortedFieldsSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ByOperationThrottle</span><span class="p">(</span><span class="n">SimpleRateThrottle</span><span class="p">):</span>
 </code></pre></div>
 <details class="note">
 <summary>Docstring</summary>
-<p>Serializer that sorts fields alphabetically. Order first 'url' and 'id' fields typically resources identifiers</p>
+<p>Throttle mechanism based on DRF SimpleRateThrottle. Check the documentation for further details.</p>
+<p>https://www.django-rest-framework.org/api-guide/throttling/#custom-throttles</p>
+<p>Throttle for mapping view operations to a custom rate throttle. The view or viewset must define a <code>throttle_scope</code> attribute to map actions to specific rate limits.
+Just add this field to the view:</p>
+<p>throttle_scopes = {
+'list': '10/m'
+'retrieve': '10/m'</p>
+<h1 id="other-actions">Other actions<a class="headerlink" href="#other-actions" title="Permanent link">&para;</a></h1>
+<p>...
+}</p>
+<p>Can be combined with other Throttle classes like UserRateThrottle or AnonRateThrottle.</p>
+<p>class ByOperationUserRateThrottle(ByOperationThrottle, UserRateThrottle):
+pass</p>
+<p>class ByOperationAnonRateThrottle(ByOperationThrottle, AnonRateThrottle):
+pass</p>
 </details>
-<div class="highlight"><pre><span></span><code>    <span class="n">sorted_first_fields</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">scope</span> <span class="o">=</span> <span class="s2">&quot;by-operation&quot;</span>  <span class="c1"># default scope</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="s2">&quot;50/m&quot;</span>  <span class="c1"># default rate limit</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">sort_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allow_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+</code></pre></div>
+<p>Override init scope and rate before checking for request</p>
+<div class="highlight"><pre><span></span><code>        <span class="bp">self</span><span class="o">.</span><span class="n">_override_scope</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_override_rate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">allow_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_override_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scope</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_override_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_rate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_requests</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_rate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;OPTIONS&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="s2">&quot;read&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;write&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_operation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">view</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_scope_suffix</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">view</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_view_scopes</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scopes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_operation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_scope_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </code></pre></div>
 <details class="note">
 <summary>Docstring</summary>
-<p>Sort representation keys alphabetically.
-Place first those fields in sorted_first_fields prop, by default identity fields ('id' and 'url')
-and last meta fields (starting with '_')</p>
-<p>:param representation: default
-:return: sorted dict</p>
+<p>Retrieves the scope suffix. Usually extracted from the view model queryset</p>
 </details>
-<p>Sort the fields alphabetically by key</p>
-<div class="highlight"><pre><span></span><code>        <span class="n">sorted_representation</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">representation</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-</code></pre></div>
-<p>Extract sorted fists fields</p>
-<div class="highlight"><pre><span></span><code>        <span class="n">sorted_first_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">field</span><span class="p">:</span> <span class="n">sorted_representation</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorted_first_fields</span>
-            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sorted_representation</span>
-        <span class="p">}</span>
-</code></pre></div>
-<p>Extract meta fields</p>
-<div class="highlight"><pre><span></span><code>        <span class="n">meta_fields_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">field</span><span class="p">:</span> <span class="n">sorted_representation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">representation</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;meta&quot;</span>
-        <span class="p">}</span>
+<div class="highlight"><pre><span></span><code>        <span class="n">queryset</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;queryset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">queryset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">sorted_first_dict</span><span class="p">:</span>
-            <span class="n">sorted_representation</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">sorted_first_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">sorted_representation</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">model_name</span>
 
-        <span class="k">if</span> <span class="n">meta_fields_dict</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">meta_fields_dict</span><span class="p">:</span>
-                <span class="n">sorted_representation</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-            <span class="n">sorted_representation</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">sorted_representation</span><span class="p">,</span> <span class="o">**</span><span class="n">meta_fields_dict</span><span class="p">}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_view_scopes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;throttle_scopes&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Missing throttle_scopes attribute in view </span><span class="si">{</span><span class="n">view</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sorted_representation</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_fields</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_representation</span><span class="p">(</span><span class="n">instance</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;throttle_scopes&quot;</span><span class="p">,</span> <span class="p">{})</span>
 </code></pre></div>
 
 

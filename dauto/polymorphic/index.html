@@ -483,116 +483,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/__init__.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    dauto.utils
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/singleton.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    dauto.utils.singleton
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/awaitable.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    dauto.utils.awaitable
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/using.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    dauto.utils.using
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/events.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    dauto.utils.events
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -642,7 +532,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.db.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">deletion</span><span class="p">,</span> <span class="n">Model</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.utils.using</span><span class="w"> </span><span class="kn">import</span> <span class="n">using</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._utils.using</span><span class="w"> </span><span class="kn">import</span> <span class="n">using</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">polymorphic</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span> <span class="o">*</span><span class="n">_serializers</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resourcetype_name</span><span class="o">=</span><span class="s2">&quot;resourcetype&quot;</span><span class="p">):</span>
