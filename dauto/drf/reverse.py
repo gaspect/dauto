@@ -1,7 +1,7 @@
 from urllib.parse import urlencode
 from rest_framework.reverse import reverse as drf_reverse
 
-# Django's `reverse` method in DRF does not provide a built-in way to generate URLs with query parameters.
+# DRF `reverse` method does not provide a built-in way to generate URLs with query parameters.
 # This utility function addresses that limitation by accepting a dictionary of query parameters
 # and returning the generated URL with the parameters appended.
 
