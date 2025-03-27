@@ -138,11 +138,10 @@ wheels = [
 
 [[package]]
 name = "dauto"
-version = "1.1.0"
+version = "1.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "django" },
-    { name = "nox" },
 ]
 
 [package.optional-dependencies]
@@ -153,7 +152,11 @@ all = [
     { name = "mkdocs" },
     { name = "mkdocs-material" },
     { name = "mkdocs-material-extensions" },
+    { name = "nox" },
     { name = "pylliterate" },
+]
+dev = [
+    { name = "nox" },
 ]
 docs = [
     { name = "mkdocs" },
@@ -186,7 +189,8 @@ requires-dist = [
     { name = "mkdocs-material", marker = "extra == 'docs'" },
     { name = "mkdocs-material-extensions", marker = "extra == 'all'" },
     { name = "mkdocs-material-extensions", marker = "extra == 'docs'" },
-    { name = "nox", specifier = ">=2025.2.9" },
+    { name = "nox", marker = "extra == 'all'", specifier = ">=2025.2.9" },
+    { name = "nox", marker = "extra == 'dev'", specifier = ">=2025.2.9" },
     { name = "pylliterate", marker = "extra == 'all'" },
     { name = "pylliterate", marker = "extra == 'docs'" },
 ]
