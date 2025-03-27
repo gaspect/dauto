@@ -29,4 +29,5 @@ nav:
         dauto.drf.permission: dauto/drf/permission.md
         dauto.drf.versioning: dauto/drf/versioning.md
         dauto.drf.serializers: dauto/drf/serializers.md
+        dauto.drf.throttling: dauto/drf/throttling.md
         dauto.polymorphic:  dauto/polymorphic.md
