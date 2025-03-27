@@ -30,4 +30,5 @@ nav:
         dauto.drf.versioning: dauto/drf/versioning.md
         dauto.drf.serializers: dauto/drf/serializers.md
         dauto.drf.throttling: dauto/drf/throttling.md
+        dauto.drf.reverse: dauto/drf/reverse.md
         dauto.polymorphic:  dauto/polymorphic.md
