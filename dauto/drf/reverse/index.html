@@ -599,11 +599,12 @@ and returning the generated URL with the parameters appended.</p>
 <p>E.g: Given the viewset PersonViewSet that manages people gen a URL to filter only cubans
 That is when the function becomes handy
 /api/v1/people?country=Cuba</p>
-<p>reverse(
-    view_name='person-list#v1',
-    query_kwargs={"country": "Cuba"},
-    request=request,
-)</p>
+<div class="highlight"><pre><span></span><code>   <span class="n">reverse</span><span class="p">(</span>
+      <span class="n">view_name</span><span class="o">=</span><span class="s1">&#39;person-list#v1&#39;</span><span class="p">,</span>
+      <span class="n">query_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;Cuba&quot;</span><span class="p">},</span>
+      <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+   <span class="p">)</span>
+</code></pre></div>
 
 
 
