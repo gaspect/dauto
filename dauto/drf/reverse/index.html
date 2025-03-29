@@ -8,9 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://gaspect.github.io/dauto/dauto/_utils/using/">
+        <link rel="canonical" href="https://gaspect.github.io/dauto/dauto/drf/reverse/">
       
       
+        <link rel="prev" href="../throttling/">
+      
+      
+        <link rel="next" href="../../polymorphic/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Using - Dauto</title>
+        <title>dauto.drf.reverse - Dauto</title>
       
     
     
@@ -99,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Using
+              dauto.drf.reverse
             
           </span>
         </div>
@@ -234,17 +238,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -259,7 +265,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             API
@@ -339,7 +345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/__init__/" class="md-nav__link">
+      <a href="../__init__/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -361,7 +367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/viewsets/mixin/" class="md-nav__link">
+      <a href="../viewsets/mixin/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -383,7 +389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/permission/" class="md-nav__link">
+      <a href="../permission/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -405,7 +411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/versioning/" class="md-nav__link">
+      <a href="../versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -427,7 +433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/serializers/" class="md-nav__link">
+      <a href="../serializers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -449,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drf/throttling/" class="md-nav__link">
+      <a href="../throttling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -468,10 +474,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../drf/reverse/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -481,6 +494,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -550,31 +564,46 @@
   
 
 
-  <h1>Using</h1>
+  <h1>dauto.drf.reverse</h1>
 
-<p><a name="ref:using"></a></p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">using</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.reverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">reverse</span> <span class="k">as</span> <span class="n">drf_reverse</span>
+</code></pre></div>
+<p>DRF <code>reverse</code> method does not provide a built-in way to generate URLs with query parameters.
+This utility function addresses that limitation by accepting a dictionary of query parameters
+and returning the generated URL with the parameters appended.</p>
+<p><a name="ref:reverse"></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reverse</span><span class="p">(</span>
+    <span class="n">view_name</span><span class="p">,</span>
+    <span class="n">request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">urlconf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">query_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
 </code></pre></div>
 <details class="note">
 <summary>Docstring</summary>
-<p>Retrieve an attribute from a module.</p>
-<p>Parameters:
-path (str): The fully qualified path of the attribute, in the format 'module_name.class_name'.</p>
-<p>Returns:
-any: The attribute object.</p>
-<p>Raises:
-ImportError: If the module or class could not be imported.</p>
+<p>Generate a URL with a query string.</p>
+<p>:param view_name: The name of the view
+:param request: The request object (optional)
+:param urlconf: The URL configuration (optional)
+:param query_kwargs: Dictionary of query parameters (optional)
+:param kwargs: Dictionary of view (path) arguments (optional)
+:return: The generated URL with query string</p>
 </details>
-<div class="highlight"><pre><span></span><code>    <span class="k">try</span><span class="p">:</span>
-        <span class="n">module_name</span><span class="p">,</span> <span class="n">class_name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="k">raise</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">base_url</span> <span class="o">=</span> <span class="n">drf_reverse</span><span class="p">(</span><span class="n">view_name</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span> <span class="n">urlconf</span><span class="o">=</span><span class="n">urlconf</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query_kwargs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">?</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">query_kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">base_url</span>
 </code></pre></div>
+<p>E.g: Given the viewset PersonViewSet that manages people gen a URL to filter only cubans
+That is when the function becomes handy
+/api/v1/people?country=Cuba</p>
+<p>reverse(
+    view_name='person-list#v1',
+    query_kwargs={"country": "Cuba"},
+    request=request,
+)</p>
 
 
 

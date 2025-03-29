@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://gaspect.github.io/dauto/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/__init__/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/admin/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/database/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/polymorphic/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/signals/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/_utils/__init__/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/_utils/using/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/__init__/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/permission/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
+    </url>
+    <url>
+         <loc>https://gaspect.github.io/dauto/dauto/drf/reverse/</loc>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/serializers/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/throttling/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/versioning/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/viewsets/__init__/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
     <url>
          <loc>https://gaspect.github.io/dauto/dauto/drf/viewsets/mixin/</loc>
-         <lastmod>2025-03-27</lastmod>
+         <lastmod>2025-03-29</lastmod>
     </url>
 </urlset>
