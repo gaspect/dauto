@@ -29,6 +29,7 @@ dependencies = [
 rest=["djangorestframework"]
 polymorphic-rest=["django-rest-polymorphic"]
 polymorphic-model=["django-polymorphic"]
+django-restql=["django-restql"]
 dev=[
     "nox>=2025.2.9"
 ]
