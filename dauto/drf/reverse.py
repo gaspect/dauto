@@ -33,11 +33,13 @@ def reverse(
 # That is when the function becomes handy
 # /api/v1/people?country=Cuba
 
-# reverse(
-#     view_name='person-list#v1',
-#     query_kwargs={"country": "Cuba"},
-#     request=request,
-# )
+# ```python
+#    reverse(
+#       view_name='person-list#v1',
+#       query_kwargs={"country": "Cuba"},
+#       request=request,
+#    )
+# ```
 
 @dataclass(frozen=True)
 class URLConfig:
