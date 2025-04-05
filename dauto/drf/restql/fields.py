@@ -36,65 +36,64 @@ class HyperlinkedNestedSerializerMethodField(DynamicSerializerMethodField):
     with nested resource serialization in a single field.
 
     This field allows:
-    - Dynamically generating hyperlinked URLs for related resources.
-    - Serializing nested resources when query arguments specify field inclusion or exclusion.
+     - Dynamically generating hyperlinked URLs for related resources.
+     - Serializing nested resources when query arguments specify field inclusion or exclusion.
 
     Behavior:
-    - If query parameters request specific nested fields, the related resource(s) will be serialized
-      using the provided `serializer_class`, respecting the parsed query structure.
-    - Otherwise, the field will return a hyperlink to the related resource, constructed using
-      a method defined on the parent serializer.
+      - If query parameters request specific nested fields, the related resource(s) will be serialized using the provided `serializer_class`, respecting the parsed query structure.
+      - Otherwise, the field will return a hyperlink to the related resource, constructed using a method defined on the parent serializer.
 
     Parameters:
         serializer_class (Type[Serializer]): The serializer class to use for nested resource serialization.
-        source (str, optional): The source attribute from which the field retrieves data. Defaults to `None`,
-            which assigns it to the field name.
         many (bool, optional): Whether the field should handle multiple related instances. Defaults to `False`.
         method_name (str): The name of the method on the parent serializer responsible for
             providing the URL configuration. By default, is resolved with get_<field_name>
 
     Raises:
-        ImproperlyConfigured: If the method specified in `method_name` does not return an instance of `URLConfig`.
+        ImproperlyConfigured: If the method specified in `method_name` does not return a tuple with the instance(s) to serialize and a `URLConfig`.
 
     Example:
         class ExampleSerializer(serializers.Serializer):
             related_resource = HyperlinkedNestedSerializerMethodField(
-                serializer_class=NestedResourceSerializer,
-                method_name="get_related_resource_url"
+                serializer_class=NestedResourceSerializer
             )
 
-            def get_related_resource_url(self, instance, parsed_query):
-                return URLConfig(
+            def get_related_resource(self, obj, parsed_query):
+                instance = obj.related_resource
+
+                url_config = URLConfig(
                     view_name="related-resource-detail",
-                    path_params={"pk": instance.related.id},
+                    path_params={"pk": instance.related.id}
                 )
+
+                return instance, url_config
     """
 
-    # noinspection PyTypeChecker
     def __init__(
-            self,
-            serializer_class: Type[Serializer],
-            source: str = None,
-            many: bool = False,
-            method_name: str = None,
-            **kwargs,
+        self,
+        serializer_class: Type[Serializer],
+        many: bool = False,
+        method_name: str = None,
+        **kwargs,
     ):
         super().__init__(method_name=method_name, **kwargs)
 
         self.serializer_class = serializer_class
-        self.source = source or self.field_name
         self.many = many
 
-    # noinspection PyTypeChecker,PyCallingNonCallable,PyUnresolvedReferences
+    # noinspection PyTypeChecker,PyUnresolvedReferences,PyCallingNonCallable
     def to_representation(self, value):
+        method = getattr(self.parent, self.method_name)
+
         is_parsed_query_available = (
-                hasattr(self.parent, "restql_nested_parsed_queries")
-                and self.field_name in self.parent.restql_nested_parsed_queries
+            hasattr(self.parent, "restql_nested_parsed_queries")
+            and self.field_name in self.parent.restql_nested_parsed_queries
         )
 
         if is_parsed_query_available:
             parsed_query = self.parent.restql_nested_parsed_queries[self.field_name]
         else:
+            # Include all fields
             parsed_query = Query(
                 field_name=None,
                 included_fields=["*"],
@@ -104,32 +103,29 @@ class HyperlinkedNestedSerializerMethodField(DynamicSerializerMethodField):
             )
 
         has_fields = (
-                parsed_query.included_fields
-                and "*" not in parsed_query.included_fields
-                or parsed_query.excluded_fields
-                or parsed_query.aliases
+            parsed_query.included_fields
+            and "*" not in parsed_query.included_fields
+            or parsed_query.excluded_fields
+            or parsed_query.aliases
         )
+
+        instance, url_config = method(value, parsed_query)
 
         if has_fields:
             if issubclass(self.serializer_class, DynamicFieldsMixin):
                 return self.serializer_class(
-                    instance=value,
+                    instance=instance,
                     context=self.context,
                     parsed_query=parsed_query,
                     many=self.many,
                 ).data
             else:
                 return self.serializer_class(
-                    instance=value,
+                    instance=instance,
                     context=self.context,
                     many=self.many,
                 ).data
 
-
-        if not isinstance(value, Model):
-            value = self.parent.instance
-
-        url_config = self._get_url_config(value, parsed_query)
         return self.reverse_url(url_config)
 
     def reverse_url(self, url_config: URLConfig):
@@ -139,13 +135,3 @@ class HyperlinkedNestedSerializerMethodField(DynamicSerializerMethodField):
             query_kwargs=url_config.query_params,
             request=self.parent.context.get("request"),
         )
-
-    def _get_url_config(self, instance, parsed_query):
-        method = getattr(self.parent, self.method_name)
-        url_config = method(instance, parsed_query)
-        if not isinstance(url_config, URLConfig):
-            raise ImproperlyConfigured(
-                f"Method {self.method_name} in {self.parent.__class__.__name__} must return an {URLConfig.__name__} instance, its returning {url_config.__class__.__name__}"
-            )
-
-        return url_config
