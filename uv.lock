@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.12.0"
 
 [[package]]
@@ -142,6 +143,7 @@ version = "1.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "django" },
+    { name = "django-restql" },
 ]
 
 [package.optional-dependencies]
@@ -157,6 +159,9 @@ all = [
 ]
 dev = [
     { name = "nox" },
+]
+django-restql = [
+    { name = "django-restql" },
 ]
 docs = [
     { name = "mkdocs" },
@@ -181,6 +186,8 @@ requires-dist = [
     { name = "django-polymorphic", marker = "extra == 'polymorphic-model'" },
     { name = "django-rest-polymorphic", marker = "extra == 'all'" },
     { name = "django-rest-polymorphic", marker = "extra == 'polymorphic-rest'" },
+    { name = "django-restql", specifier = ">=0.16.2" },
+    { name = "django-restql", marker = "extra == 'django-restql'" },
     { name = "djangorestframework", marker = "extra == 'all'" },
     { name = "djangorestframework", marker = "extra == 'rest'" },
     { name = "mkdocs", marker = "extra == 'all'" },
@@ -194,6 +201,7 @@ requires-dist = [
     { name = "pylliterate", marker = "extra == 'all'" },
     { name = "pylliterate", marker = "extra == 'docs'" },
 ]
+provides-extras = ["rest", "polymorphic-rest", "polymorphic-model", "django-restql", "dev", "docs", "all"]
 
 [[package]]
 name = "dependency-groups"
@@ -255,6 +263,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f4/86/285f7da71ecd82ce6f1765ffb74425faf8244d8554cb6d00542286157701/django-rest-polymorphic-0.1.10.tar.gz", hash = "sha256:2960f58ed9a8bb0d42bc72c8ffaadfbd7f37d2573d42a1cd9a6460f3d572b519", size = 6464 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d3/90/e20bde06ea67111718ad8d03e21cccdfe37e24ccdff30ea22100a3004070/django_rest_polymorphic-0.1.10-py2.py3-none-any.whl", hash = "sha256:f3980e3e2af73357e7913f9b1410ef856866bcfcc46903b70fe9621118bb538c", size = 6027 },
+]
+
+[[package]]
+name = "django-restql"
+version = "0.16.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "djangorestframework" },
+    { name = "pypeg2" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2c/27/acbac4a9e0d8c94ff62e2d94d0242178214d0ec3da0e468f8bfc1c94b05c/django-restql-0.16.2.tar.gz", hash = "sha256:d32fd7e7ddf48eb69a98bc68f91aa50df26358a190be618781422d063f55e3c5", size = 28820 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/62/99f7a76b4e5f50ddf060d3b21040a21dc68d9ba05ae3e9c34652a86be24b/django_restql-0.16.2-py3-none-any.whl", hash = "sha256:cc914339e1f89b113bd11d34acbcc057655cd650663df596bcedb786bef063ba", size = 20246 },
 ]
 
 [[package]]
@@ -600,6 +622,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/7c/44/e6de2fdc880ad0ec7
 wheels = [
     { url = "https://files.pythonhosted.org/packages/eb/f5/b9e2a42aa8f9e34d52d66de87941ecd236570c7ed2e87775ed23bbe4e224/pymdown_extensions-10.14.3-py3-none-any.whl", hash = "sha256:05e0bee73d64b9c71a4ae17c72abc2f700e8bc8403755a00580b49a4e9f189e9", size = 264467 },
 ]
+
+[[package]]
+name = "pypeg2"
+version = "2.15.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/bd/10398e2c2d2070cc8a9c7153abfbd4ddb2895a2c52a32722ab8689e0cc7d/pyPEG2-2.15.2.tar.gz", hash = "sha256:2b2d4f80d8e1a9370b2a91f4a25f4abf7f69b85c8da84cd23ec36451958a1f6d", size = 40334 }
 
 [[package]]
 name = "python-dateutil"

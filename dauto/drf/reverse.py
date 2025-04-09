@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from urllib.parse import urlencode
 from rest_framework.reverse import reverse as drf_reverse
 
@@ -39,3 +40,13 @@ def reverse(
 #       request=request,
 #    )
 # ```
+
+@dataclass(frozen=True)
+class URLConfig:
+    """
+    Simple dataclass for necessary url reverse configuration
+    """
+
+    view_name: str
+    path_params: dict[str, str] | None = None
+    query_params: dict[str, str] | None = None
